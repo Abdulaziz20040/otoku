@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import AuthBackground from "./Auth_bacground.jpg"; // Faylni tekshirib ko'ring
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -83,7 +82,7 @@ function Login() {
       <div
         className="absolute inset-0 bg-black opacity-90"
         style={{
-          backgroundImage: `url(${AuthBackground})`,
+          backgroundImage: `url("/Auth_bacground.jpg")`,
           backgroundSize: "170% 150%",
           backgroundPosition: "center",
         }}

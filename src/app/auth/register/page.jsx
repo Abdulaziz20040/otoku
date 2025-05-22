@@ -6,7 +6,6 @@ import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
-import AuthBackground from "../../../../public/Auth_bacground.jpg"; // Faylni tekshirib ko'ring
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify"; // ToastContainer ni to'g'ri import qilish
@@ -142,7 +141,7 @@ function Register() {
       <div
         className="absolute inset-0 bg-black opacity-90"
         style={{
-          backgroundImage: `url(${AuthBackground})`,
+          backgroundImage: `url("/Auth_bacground.jpg")`,
           backgroundSize: "170% 150%",
           backgroundPosition: "center",
         }}

@@ -48,6 +48,7 @@ const isValidImageUrl = (url) => {
 function Profil() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true); // Yuklash holatini kuzatish
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -112,7 +113,10 @@ function Profil() {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
-    if (!token) return;
+    if (!token) {
+      setIsLoading(false); // Agar token bo'lmasa, loadingni to'xtatish
+      return;
+    }
 
     fetch("https://otaku.up-it.uz/api/user/profile", {
       headers: {
@@ -139,10 +143,12 @@ function Profil() {
           bio: data.bio,
           posts: data.posts,
         });
+        setIsLoading(false); // Ma'lumotlar yuklangach loadingni to'xtatish
       })
-      .catch((err) =>
-        console.error("Foydalanuvchi ma'lumotlarini olishda xatolik:", err)
-      );
+      .catch((err) => {
+        console.error("Foydalanuvchi ma'lumotlarini olishda xatolik:", err);
+        setIsLoading(false); // Xato yuzaga kelsa loadingni to'xtatish
+      });
   }, []);
 
   const userInitial = user?.name?.charAt(0)?.toUpperCase() || "U";
@@ -160,7 +166,21 @@ function Profil() {
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
 
-  if (!user) return <p>Yuklanmoqda...</p>;
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center text-white bg-black bg-opacity-90">
+        <div className="flex flex-col items-center gap-4">
+          <img
+            src="/spinner.svg"
+            alt="loading"
+            className="w-12 h-12 animate-spin"
+          />
+          <p className="text-lg">Yuklanmoqda...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-10">
       <div className="bg-white rounded-[20px]">

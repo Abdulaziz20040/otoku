@@ -16,6 +16,7 @@ function UserProfil() {
     email: "",
     photo: "",
     bio: "",
+    background: "",
     followers: 0,
     following: 0,
     posts: [],
@@ -40,6 +41,7 @@ function UserProfil() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [activeContent, setActiveContent] = useState("Hammasi");
   const dropdownRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true); // Yuklash holatini kuzatish
 
   useEffect(() => {
     localStorage.setItem("activeTab", activeTab);
@@ -48,6 +50,10 @@ function UserProfil() {
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("accessToken");
+      if (!token) {
+        setIsLoading(false); // Agar token bo'lmasa, loadingni to'xtatish
+        return;
+      }
       const userItem = localStorage.getItem("user");
 
       let currentUser = null;
@@ -95,8 +101,10 @@ function UserProfil() {
           subscribers: data.followers?.length || 0,
           subscriptions: data.following?.length || 0,
         });
+        setIsLoading(false); // Ma'lumotlar yuklangach loadingni to'xtatish
       } catch (error) {
         console.error("❌ Foydalanuvchini olishda xatolik:", error);
+        setIsLoading(false); // Ma'lumotlar yuklangach loadingni to'xtatish
       }
     };
 
@@ -153,19 +161,50 @@ function UserProfil() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center text-white bg-black bg-opacity-90">
+        <div className="flex flex-col items-center gap-4">
+          <img
+            src="/spinner.svg"
+            alt="loading"
+            className="w-12 h-12 animate-spin"
+          />
+          <p className="text-lg">Yuklanmoqda...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-10">
-      <div className="bg-white rounded-[20px] pt-6">
-        <div className="relative w-full">
-          <img
-            className="w-[70px] h-[70px] rounded-full ms-6"
-            src={
-              user?.photo ||
-              "https://i.pinimg.com/736x/52/fe/0f/52fe0fbcc8939e69873f89489994d9e5.jpg"
-            }
-            alt="Profil rasmi"
-          />
-          <div className="absolute flex items-center gap-4 right-6 top-6">
+      <div className="bg-white rounded-[20px]">
+        <div
+          className="relative"
+          style={{
+            backgroundImage: `url(${
+              user.background && user.background.startsWith("http")
+                ? user.background
+                : "https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjg5NC1rdWwtMDZfMS5qcGc.jpg"
+            })`,
+            width: "100%",
+            height: "30vh",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: "20px 20px 0px 0px",
+          }}
+        >
+          <button className="w-[86px] h-[86px] rounded-full flex justify-center items-center ms-6 absolute -bottom-[33px] bg-white">
+            <img
+              className="w-[80px] h-[80px] rounded-full "
+              src={
+                user?.photo ||
+                "https://i.pinimg.com/736x/52/fe/0f/52fe0fbcc8939e69873f89489994d9e5.jpg"
+              }
+              alt="Profil rasmi"
+            />
+          </button>
+          <div className="absolute flex items-center gap-4 right-6 -bottom-12">
             <div className="relative" ref={dropdownRef}>
               <BsThreeDots
                 className="text-[#B7B1B1] text-[20px] cursor-pointer"
@@ -189,7 +228,7 @@ function UserProfil() {
             </div>
 
             <button
-              className={`px-3 py-1 rounded-lg cursor-pointer transition-all duration-300 ${
+              className={`px-3 py-1 rounded-lg cursor-pointer transition-all duration-300  ${
                 isSubscribed
                   ? "bg-blue-200 text-blue-600" // Obunada bo‘lsa — och rang
                   : "bg-blue-400 text-white" // Obuna bo‘lmasa — to‘q rang
@@ -201,7 +240,7 @@ function UserProfil() {
           </div>
         </div>
 
-        <div className="px-5 pb-5 mt-8">
+        <div className="px-5 pb-5 mt-14">
           <h1 className="text-[25px] font-bold">
             {user?.username || "Noma'lum"}
           </h1>

@@ -24,6 +24,8 @@ const CustomEditor = () => {
   const [showHeadingMenu, setShowHeadingMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const editorRef = useRef(null);
+  const [title, setTitle] = useState("");
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setTitle(localStorage.getItem("postTitle") || "");

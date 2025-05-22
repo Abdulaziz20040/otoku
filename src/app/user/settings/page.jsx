@@ -1,13 +1,14 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
-import addImg from "../../../../public/addBacgroundimg.png";
 import Link from "next/link";
 import Acaunt from "./acaunt/page";
 import Pricacy from "./privacy/page";
 import Notifications from "./notifacions/page";
 import Blacklist from "./blacklist/page";
 import ImageCropper from "../../../components/ImageCropper"; // 🔧 Cropper komponentini to'g'ri yo'ldan import qilish zarur
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const options = ["Hammasi", "Faqat obunachilar", "Faqat o’zim"];
 
@@ -178,7 +179,8 @@ function Settings() {
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Xatolik");
 
-      alert("Muvaffaqiyatli saqlandi!");
+      toast.success("Muvaffaqiyatli saqlandi!");
+
       setUser((prev) => ({ ...prev, ...updatedUser }));
       setPhotoPreview(null);
       setBackgroundPreview(null);
@@ -232,9 +234,10 @@ function Settings() {
                     className="relative"
                     style={{
                       backgroundImage: `url(${
-                        user?.background && user?.background.startsWith("http")
-                          ? user?.background
-                          : "https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjg5NC1rdWwtMDZfMS5qcGc.jpg"
+                        backgroundPreview ||
+                        (user?.background?.startsWith("http")
+                          ? user.background
+                          : "https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjg5NC1rdWwtMDZfMS5qcGc.jpg")
                       })`,
                       width: "100%",
                       height: "200px",
@@ -243,10 +246,9 @@ function Settings() {
                       borderRadius: "20px 20px 0px 0px",
                     }}
                   ></div>
-
                   <button onClick={() => backgroundInputRef.current?.click()}>
                     <img
-                      src={addImg}
+                      src="/addBacgroundimg.png"
                       className="w-[50px] h-[50px] absolute top-[33%] right-[50%]"
                       alt="Add Background"
                     />
@@ -266,9 +268,17 @@ function Settings() {
                   />
                 </div>
 
+                {cropModalOpen && imageForCrop && (
+                  <ImageCropper
+                    image={imageForCrop}
+                    onComplete={handleCropComplete}
+                    onCancel={() => setCropModalOpen(false)}
+                  />
+                )}
+
                 <button onClick={() => backgroundInputRef.current?.click()}>
                   <img
-                    src={addImg}
+                    src="/addBacgroundimg.png"
                     className="w-[50px] h-[50px] absolute top-[33%] right-[50%]"
                     alt="Add Background"
                   />
@@ -413,6 +423,16 @@ function Settings() {
           onCropComplete={handleCropComplete}
         />
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

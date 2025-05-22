@@ -4,10 +4,10 @@ import { IoIosAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
 
-const tabs = ["Jamiyatlar", "Foydalanuvchilar", "Nazorat"];
+const tabs = ["Mavzular"];
 
 function CommunitiesPage() {
-  const [activeTab, setActiveTab] = useState("Jamiyatlar");
+  const [activeTab, setActiveTab] = useState("Mavzular");
 
   useEffect(() => {
     // Agar brauzerda bo'lsak, localStorage'dan qiymat olish
@@ -35,7 +35,7 @@ function CommunitiesPage() {
   return (
     <div className="px-10">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-[24px] font-bold">Jamiyatlar</h1>
+        <h1 className="text-[24px] font-bold">Mavzular</h1>
         <Link href={"/createpost"}>
           <button className="flex items-center gap-2 text-[#50D1F9] text-[17px] cursor-pointer">
             <IoIosAdd className="text-[22px]" />
@@ -44,9 +44,8 @@ function CommunitiesPage() {
         </Link>
       </div>
       <p className="text-[#B1B1B1] mt-2 text-[14px] w-[663px]">
-        Eng mashhur Ongaku jamoalari va foydalanuvchilari haqida umumiy
-        ma'lumot. O'zingizga yoqqan narsani toping yoki o'z hamjamiyatingizni
-        yarating.
+        Eng mashhur Otaku jamoalari va foydalanuvchilari haqida umumiy ma'lumot.
+        O'zingizga yoqqan narsani toping yoki o'z hamjamiyatingizni yarating.
       </p>
       <div className="border-b-[#50D1F9] flex gap-10 text-[16px] font-medium mt-4">
         {tabs.map((tab) => (
@@ -74,7 +73,7 @@ function CommunitiesPage() {
         </div>
       </div>
       <div className="mt-6">
-        {activeTab === "Jamiyatlar" && (
+        {activeTab === "Mavzular" && (
           <div>
             <div className="mt-4 space-y-2">
               {[
@@ -155,7 +154,7 @@ function CommunitiesPage() {
             </div>
           </div>
         )}
-        {activeTab === "Foydalanuvchilar" && (
+        {/* {activeTab === "Foydalanuvchilar" && (
           <div>
             <h1 className="text-[24px] font-bold">Foydalanuvchilar</h1>
           </div>
@@ -164,7 +163,7 @@ function CommunitiesPage() {
           <div>
             <h1 className="text-[24px] font-bold">Nazorat</h1>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

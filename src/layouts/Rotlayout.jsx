@@ -1,27 +1,40 @@
-// app/layout.jsx
-
+// app/layout.tsx
 "use client";
 import Sidebar from "@/components/Sidebar";
 import "../app/globals.css";
 import ClientWrapper from "../components/ClientWrapper";
-import { usePathname } from "next/navigation"; // TO‘G‘RI HOZIRGI URL olish
+import { usePathname } from "next/navigation";
 import React from "react";
 import Followers from "./Foollowers";
+import DashboardLayout from "@/app/admin/layouts/layout";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
+  // Login yoki register sahifalari bo‘lsa, faqat sahifa chiqadi
   const isAuthPage =
     pathname === "/auth/login" ||
     pathname === "/auth/register" ||
-    pathname === "/admin";
+    pathname === "/admin"; // /admin yo'li uchun layout ko'rsatilmaydi
 
-  // Login yoki register sahifalari bo‘lsa, faqat sahifa chiqadi
+  // Agar auth sahifasi bo‘lsa, faqat content ko‘rsatiladi
   if (isAuthPage) {
     return (
       <html lang="en">
         <body>
           <div className="">{children}</div>
+        </body>
+      </html>
+    );
+  }
+
+  // Agar /admin/dashboard sahifasiga kirmoqchi bo'lsa, faqat DashboardLayout ko'rsatiladi
+  if (pathname.startsWith("/admin/dashboard")) {
+    return (
+      <html lang="en">
+        <body>
+          <DashboardLayout>{children}</DashboardLayout>{" "}
+          {/* Faqat dashboard layout */}
         </body>
       </html>
     );
@@ -39,7 +52,6 @@ export default function RootLayout({ children }) {
           }}
         >
           <ClientWrapper className="w-full" />
-
           <div className="flex flex-1 mt-8">
             <Sidebar className="w-1/4 min-w-[250px]" />
 

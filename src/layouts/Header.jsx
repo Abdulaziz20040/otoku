@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import logo from "../../public/Otoku.png";
 import { CiSearch } from "react-icons/ci";
 import { IoMdAdd } from "react-icons/io";
 import { IoChevronDownSharp, IoNotificationsOutline } from "react-icons/io5";
@@ -106,16 +105,16 @@ function Header() {
       <div>
         <Link href="/">
           <img
-            src={logo}
-            style={{ width: "90px", height: "25px" }}
+            src="Otoku.png"
+            style={{ width: "80px", height: "23px" }}
             alt="Logo"
           />
         </Link>
       </div>
 
       {/* Search */}
-      <div className="relative w-[922px] px-10 ms-[142px] flex gap-2 text-[#B1B1B1] text-[16px]">
-        <CiSearch className="absolute top-2 left-13 text-[20px]" />
+      <div className="relative w-[580px] ms-[90px]   flex gap-2 text-[#B1B1B1] text-[16px]">
+        <CiSearch className="absolute top-[7px] left-3 text-[20px]" />
         <input
           className="w-full h-[35px] bg-white rounded-lg ps-11 outline-none"
           placeholder="Qidirish"
